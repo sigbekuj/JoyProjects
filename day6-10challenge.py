@@ -7,8 +7,24 @@
 
 import os
 
-def menu():
-    tasks = [ ]
+
+def load_tasks(): #creating the text file  
+    try: 
+        with open('todolist.txt', 'w+') as f:
+                return f.read().splitlines() # Reads the entire content of the file as a single string and then splits it into a list of lines
+    except FileNotFoundError:
+        return []
+        
+
+def save_tasks(tasks):  # saving the text file
+    with open('todolist.txt', 'w') as f:
+        for item in tasks:
+            f.write(item + "\n")
+    
+        
+          
+def main():
+    tasks = load_tasks()
     while True:
         print("------------Welcome to DoITby.Joy app----------")
         print("                ")
@@ -22,20 +38,18 @@ def menu():
         if choice == "1":
             alltasks = input("Add your task here: ")
             tasks.append(alltasks)
-            with open('todolist.txt', 'w+') as f:
-                for items in tasks:
-                    f.write('%s\n' %items)
-                print("File written to text file successfully")
-            f.close()    
-        
+            save_tasks(tasks)
+    
         elif choice == "2":
             for i, word in enumerate(tasks): #numbers each item in list
                 print(f"{i}: {word}")
         
             
         elif choice == "3":
-            tasks.pop()
+            removeitem =  int(input(" Choose index you want to delete from list: "))
+            tasks.pop(removeitem)
             print(tasks)
+            save_tasks(tasks)
         
         elif choice == "4":
             exit()  # using exit instead of break solves the else statement still printing problem I was having #
@@ -44,8 +58,10 @@ def menu():
                           
 
 #file handling 
-fruits = ['apple', 'banana', 'orange' , 'grapes']
+#fruits = ['apple', 'banana', 'orange' , 'grapes']
 
 
                 
-f = open('todolist.txt', 'w')
+#f = open('todolist.txt', 'w')
+
+main()
